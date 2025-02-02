@@ -1,0 +1,96 @@
+* {
+    font:   "MonaspiceKrNerdFont 11";
+
+    // catppuccin
+    base:       #1e1e2e;
+    surface0:   #313244;
+    surface1:   #45475a;
+    surface2:   #585b70;
+    rosewater:  #f5e0dc;
+    teal:       #94e2d5;
+    text:       #cdd6f4;
+    mauve:      #cba6f7;
+    green:      #a6e3a1;
+
+    margin:     0px;
+    padding:    0px;
+    spacing:    0px;
+
+    text-color: #ffffff;
+}
+
+window {
+    background-color:   @base;
+    border:             1px;
+    border-color:       @teal;
+
+    location:   center;
+    width:      360px;
+    padding: 18px;
+
+    children: [ inputbar, listview ];
+    spacing: 18px;
+}
+
+inputbar {
+    padding:    8px 12px;
+    spacing:    12px;
+    children:   [ prompt, entry ];
+
+    background-color: @surface0;
+    border: 1px;
+    border-color: @rosewater;
+}
+
+prompt {
+    text-color: @teal;
+}
+
+entry {
+    text-color: @text;
+}
+
+listview {
+    lines:          8;
+    columns:        1;
+    fixed-height:   true;
+    scrollbar:      false;
+
+    // Using this to create the effect of borders around elements
+    border:         0px;
+    spacing:        0px;
+    padding:        1px;
+    background-color: @surface1;
+}
+
+element {
+    padding: 4px;
+    spacing: 12px;
+    children: [ element-icon, element-text ];
+}
+
+element normal normal {
+    text-color: @text;
+    background-color: @surface1;
+}
+
+element alternate normal {
+    text-color: @text;
+    background-color: @surface0;
+}
+
+element selected normal {
+    background-color:   @rosewater;
+    text-color:         @surface0;
+}
+
+element-text {
+    background-color: inherit;
+    text-color: inherit;
+    vertical-align: 0.5;
+}
+
+element-icon {
+    size:           1em;
+    vertical-align: 0.5;
+}

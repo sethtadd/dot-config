@@ -1,0 +1,20 @@
+import = [
+  # "~/.config/alacritty/catppuccin-macchiato.toml"
+  # "~/.config/alacritty/catppuccin-frappe.toml"
+  "~/.config/alacritty/catppuccin-mocha.toml"
+]
+
+# Fix padding around neovim
+[font.offset]
+x = 0
+y = 0
+
+[window]
+decorations = "Full"
+
+[window.padding]
+x = 0
+y = 0
+
+[env]
+TERM = "xterm-256color"

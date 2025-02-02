@@ -1,0 +1,15 @@
+# Ignore everything in the repository…
+/*
+
+# …except for these directories:
+!.gitignore
+!nvim/
+!polybar/
+!i3/
+!alacritty/
+!rofi/
+!tmux/
+
+# tmux git-pull's it's plugins under it's root folder,
+# so we need to ignore them to prevent nested-git-repo issues
+tmux/plugins/*
