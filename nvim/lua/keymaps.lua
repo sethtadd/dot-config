@@ -140,7 +140,6 @@ wk.add({
         end,
         desc = "Trigger Completion"
       },
-
       {
         "<C-n>",
         function()
@@ -152,7 +151,6 @@ wk.add({
         end,
         desc = "Next Completion Item"
       },
-
       {
         "<C-p>",
         function()
@@ -164,7 +162,6 @@ wk.add({
         end,
         desc = "Previous Completion Item"
       },
-
       {
         "<C-f>",
         function()
@@ -176,7 +173,6 @@ wk.add({
         end,
         desc = "Scroll Documentation Down"
       },
-
       {
         "<C-b>",
         function()
@@ -188,7 +184,6 @@ wk.add({
         end,
         desc = "Scroll Documentation Up"
       },
-
       {
         "<C-y>",
         function()
@@ -200,7 +195,17 @@ wk.add({
         end,
         desc = "Confirm Completion"
       },
-
+      {
+        "<C-m>",
+        function()
+          if cmp.visible() and cmp.get_selected_entry() then
+            cmp.confirm({ select = true })
+          else
+            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-y>", true, true, true), "n", true)
+          end
+        end,
+        desc = "Confirm Completion"
+      },
       {
         "<C-e>",
         function()
