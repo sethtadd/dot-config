@@ -80,7 +80,7 @@ bindsym $mod+Shift+q kill
 focus_follows_mouse no
 
 # start rofi
-bindsym $mod+d exec "rofi -modi drun,ssh -show drun"
+bindsym $mod+d exec "rofi -modi drun,ssh,run -show drun"
 
 # change focus
 bindsym $mod+h focus left
@@ -206,11 +206,8 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
-# Start i3bar to display a workspace bar (plus the system information i3status
-# finds out, if available)
-# bar {
-#         status_command i3status
-# }
+# polybar
+exec_always --no-startup-id sh -c "killall -q polybar; while pgrep -u $UID -x polybar >/dev/null; do sleep 1; done; polybar &"
 
 # Natural scrolling
 exec --no-startup-id xinput set-prop "PIXA3854:00 093A:0274 Touchpad" "libinput Natural Scrolling Enabled" 1
