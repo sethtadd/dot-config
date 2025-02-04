@@ -9,6 +9,7 @@
 !alacritty/
 !rofi/
 !tmux/
+!dunst/
 
 # tmux git-pull's it's plugins under it's root folder,
 # so we need to ignore them to prevent nested-git-repo issues
