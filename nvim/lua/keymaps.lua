@@ -99,12 +99,11 @@ wk.add({
       -- Moving between function/class text objects
       { "]f",   "<cmd>lua require'nvim-treesitter.textobjects.move'.goto_next_start('@function.outer')<CR>",     desc = "Next Function Start" },
       { "]F",   "<cmd>lua require'nvim-treesitter.textobjects.move'.goto_next_end('@function.outer')<CR>",       desc = "Next Function End" },
-      { "]c",   "<cmd>lua require'nvim-treesitter.textobjects.move'.goto_next_start('@class.outer')<CR>",        desc = "Next Class Start" },
-      { "]C",   "<cmd>lua require'nvim-treesitter.textobjects.move'.goto_next_end('@class.outer')<CR>",          desc = "Next Class End" },
       { "[f",   "<cmd>lua require'nvim-treesitter.textobjects.move'.goto_previous_start('@function.outer')<CR>", desc = "Previous Function Start" },
       { "[F",   "<cmd>lua require'nvim-treesitter.textobjects.move'.goto_previous_end('@function.outer')<CR>",   desc = "Previous Function End" },
-      { "[c",   "<cmd>lua require'nvim-treesitter.textobjects.move'.goto_previous_start('@class.outer')<CR>",    desc = "Previous Class Start" },
-      { "[C",   "<cmd>lua require'nvim-treesitter.textobjects.move'.goto_previous_end('@class.outer')<CR>",      desc = "Previous Class End" },
+      -- Gitsigns
+      { "]c",   "<cmd>Gitsigns next_hunk<CR>",                                                                   desc = "Next Change" },
+      { "[c",   "<cmd>Gitsigns prev_hunk<CR>",                                                                   desc = "Previous Change" },
     },
 
   },
