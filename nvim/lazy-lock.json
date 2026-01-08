@@ -9,6 +9,7 @@
   "copilot-cmp": { "branch": "master", "commit": "15fc12af3d0109fa76b60b5cffa1373697e261d1" },
   "copilot-lualine": { "branch": "main", "commit": "dc4b8ed0f75bc2557b3158c526624bf04ad233ea" },
   "copilot.lua": { "branch": "master", "commit": "886ee73b6d464b2b3e3e6a7ff55ce87feac423a9" },
+  "dir-telescope.nvim": { "branch": "main", "commit": "805405b9f98dc3470f8676773dc0e6151a9158ed" },
   "gitsigns.nvim": { "branch": "main", "commit": "31d2dcd144c7404dacbd2ca36b5abd37cc9fa506" },
   "incline.nvim": { "branch": "main", "commit": "16fc9c073e3ea4175b66ad94375df6d73fc114c0" },
   "indent-blankline.nvim": { "branch": "master", "commit": "e10626f7fcd51ccd56d7ffc00883ba7e0aa28f78" },

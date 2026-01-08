@@ -43,6 +43,9 @@ wk.add({
     { "<leader>so",  "<cmd>Telescope oldfiles<cr>",                                          desc = "Find Old Files" },
     { "<leader>ss",  "<cmd>Telescope grep_string<cr>",                                       desc = "Grep String Under Cursor" },
     { "<leader>st",  "<cmd>Telescope treesitter<cr>",                                        desc = "Treesitter Symbols" },
+    { "<leader>sd",  group = "directory" },
+    { "<leader>sdg", "<cmd>Telescope dir live_grep<cr>",                                     desc = "Live Grep in Directory" },
+    { "<leader>sdf", "<cmd>Telescope dir find_files<cr>",                                    desc = "Find Files in Directory" },
 
     -- Zk
     -- https://github.com/zk-org/zk-nvim#example-mappings
