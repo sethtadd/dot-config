@@ -58,18 +58,30 @@ return {
             }
           end
           -- Clangd specific settings
-          -- FIXME: Fix "iostream not found" etc. The following did not seem to work.
           if server_name == "clangd" then
-            settings = {
-              clangd = {
-                compilationDatabasePath = "./", -- Optional: set this if you do sometimes have compile_commands.json
+            lspconfig.clangd.setup {
+              on_attach = on_attach,
+              capabilities = capabilities,
+              flags = { debounce_text_changes = 150 },
+              cmd = {
+                "clangd",
+                "--background-index",
+                "--clang-tidy",
+                "--compile-commands-dir=.", -- adjust if your compile_commands.json is elsewhere
+                "--query-driver=/usr/bin/g++,/usr/bin/clang++,*-gcc,*-g++",
+                -- Uncomment while debugging:
+                -- "--log=verbose", "--pretty"
+              },
+              -- Optional fallback for files missing from the DB:
+              init_options = {
                 fallbackFlags = {
-                  "-std=c++17",                 -- Set the C++ standard you typically use
-                  "-I/usr/include",             -- Add standard system include paths
-                  "-I/usr/local/include",       -- Add common local include paths (optional)
-                }
-              }
+                  "-std=c++20",
+                  "-I/usr/include",
+                  "-I/usr/local/include",
+                },
+              },
             }
+            return
           end
 
           -- Setup LSP servers

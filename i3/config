@@ -210,12 +210,13 @@ bindsym $mod+r mode "resize"
 exec_always --no-startup-id sh -c "killall -q polybar; while pgrep -u $UID -x polybar >/dev/null; do sleep 1; done; polybar &"
 
 # redshift
-exec_always --no-startup-id sh -c 'pkill -x redshift; redshift'
+exec_always --no-startup-id sh -c 'redshift -xr; redshift -r'
 
 # Natural scrolling
 exec --no-startup-id xinput set-prop "PIXA3854:00 093A:0274 Touchpad" "libinput Natural Scrolling Enabled" 1
 exec --no-startup-id xinput set-prop "PIXA3854:00 093A:0274 Mouse" "libinput Natural Scrolling Enabled" 1
 
 # slow down mouse input for logitech superlight mouse
-exec --no-startup-id xinput set-prop "Logitech USB Receiver" "libinput Accel Speed" -1.0
+# exec --no-startup-id xinput set-prop "Logitech USB Receiver" "libinput Accel Speed" -1.0
 
+exec_always --no-startup-id sh -c 'sleep 2; DEV="Logitech USB Receiver"; ID=$(xinput list --id-only "$DEV" 2>/dev/null); if [ -n "$ID" ]; then; xinput set-prop $ID "libinput Accel Speed" -0.8; fi'

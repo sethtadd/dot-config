@@ -72,19 +72,27 @@ wk.add({
     { "<leader>ls",  "<cmd>lua vim.lsp.buf.signature_help()<CR>",                            desc = "Signature Help" },
 
     -- Git actions
-    { "<leader>g",   group = "git" },
-    { "<leader>gs",  "<cmd>Git<CR>",                                                         desc = "Git Status" },
-    { "<leader>gd",  "<cmd>Gvdiffsplit<CR>",                                                 desc = "Git Diff" },
-    { "<leader>gb",  "<cmd>Git blame<CR>",                                                   desc = "Git Blame" },
+    { "<leader>g",   group = "Git" },
+    {
+      "<leader>gd",
+      function()
+        vim.ui.input({ prompt = "Revision: " }, function(rev)
+          if rev then vim.cmd("leftabove Gvdiffsplit " .. rev) end
+        end)
+      end,
+      desc = "Git Diff"
+    },
+    { "<leader>gs", "<cmd>Git<CR>",                                     desc = "Git Status" },
+    { "<leader>gb", "<cmd>Git blame<CR>",                               desc = "Git Blame" },
 
     -- Key mappings for toggleterm
-    { "<C-\\>",      "<cmd>exe v:count1 . 'ToggleTerm'<CR>",                                 desc = "Toggle Terminal" },
+    { "<C-\\>",     "<cmd>exe v:count1 . 'ToggleTerm'<CR>",             desc = "Toggle Terminal" },
 
     -- Key mappings for nabla.nvim
-    { "<leader>p",   "<cmd>lua require'nabla'.popup()<CR>",                                  desc = "Nabla Popup" },
-    { "<leader>n",   "<cmd>lua require('nabla').toggle_virt()<CR>",                          desc = "Toggle Nabla Inline Rendering" },
+    { "<leader>p",  "<cmd>lua require'nabla'.popup()<CR>",              desc = "Nabla Popup" },
+    { "<leader>n",  "<cmd>lua require('nabla').toggle_virt()<CR>",      desc = "Toggle Nabla Inline Rendering" },
     -- render-markdown.nvim
-    { "<leader>m",   "<cmd>lua require('render-markdown').toggle()<CR>",                     desc = "Toggle Render Markdown" },
+    { "<leader>m",  "<cmd>lua require('render-markdown').toggle()<CR>", desc = "Toggle Render Markdown" },
 
     -- Treesitter
     {

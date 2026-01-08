@@ -1,4 +1,5 @@
-import = [
+# i believe this general.import = [] syntax is for newer alacritty, if it doesn't work, update your alacritty
+general.import = [
   # "~/.config/alacritty/catppuccin-macchiato.toml"
   # "~/.config/alacritty/catppuccin-frappe.toml"
   "~/.config/alacritty/catppuccin-mocha.toml"

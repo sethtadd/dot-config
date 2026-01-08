@@ -3,6 +3,7 @@
 
 # …except for these directories:
 !.gitignore
+!CLAUDE.md
 !nvim/
 !polybar/
 !i3/
