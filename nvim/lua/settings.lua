@@ -40,9 +40,6 @@ vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
 vim.opt.cursorline = true
 -- vim.opt.cursorcolumn = true
 
--- Make window separators more visible (Catppuccin surface2)
-vim.api.nvim_set_hl(0, 'WinSeparator', { fg = '#585b70' })
-
 -- Don't show default mode text; shown by status line
 vim.opt.showmode = false
 

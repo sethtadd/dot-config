@@ -3,8 +3,15 @@ return {
   name = "catppuccin",
   lazy = false,
   priority = 1000,
-  config = function()
-    -- load the colorscheme here
+  opts = {
+    custom_highlights = function(colors)
+      return {
+        WinSeparator = { fg = colors.surface2 },
+      }
+    end,
+  },
+  config = function(_, opts)
+    require('catppuccin').setup(opts)
     vim.cmd([[colorscheme catppuccin-mocha]])
   end,
 }
