@@ -41,8 +41,7 @@ wk.add({
     { "<leader>sg",  "<cmd>Telescope live_grep<cr>",                                         desc = "Live Grep" },
     { "<leader>sb",  "<cmd>Telescope buffers<cr>",                                           desc = "List Buffers" },
     { "<leader>so",  "<cmd>Telescope oldfiles<cr>",                                          desc = "Find Old Files" },
-    { "<leader>ss",  "<cmd>Telescope grep_string<cr>",                                       desc = "Grep String Under Cursor" },
-    { "<leader>st",  "<cmd>Telescope treesitter<cr>",                                        desc = "Treesitter Symbols" },
+    { "<leader>sn",  "<cmd>Telescope notify<cr>",                                            desc = "Notifications" },
     { "<leader>sd",  group = "directory" },
     { "<leader>sdg", "<cmd>Telescope dir live_grep<cr>",                                     desc = "Live Grep in Directory" },
     { "<leader>sdf", "<cmd>Telescope dir find_files<cr>",                                    desc = "Find Files in Directory" },
@@ -90,6 +89,7 @@ wk.add({
 
     -- Key mappings for toggleterm
     { "<C-\\>",     "<cmd>exe v:count1 . 'ToggleTerm'<CR>",             desc = "Toggle Terminal" },
+    { "<leader>st", "<cmd>TermSelect<CR>",                              desc = "Select Terminal" },
 
     -- Key mappings for nabla.nvim
     { "<leader>p",  "<cmd>lua require'nabla'.popup()<CR>",              desc = "Nabla Popup" },
@@ -132,8 +132,20 @@ wk.add({
   -- Terminal mode
   {
     mode = { "t" },
-    { "<C-\\>", "<cmd>exe v:count1 . 'ToggleTerm'<CR>", desc = "Toggle Terminal" },
-    { "<esc>",  [[<C-\><C-n>]],                         desc = "Normal Mode" },
+    {
+      "<C-\\>",
+      function()
+        local terms = require('toggleterm.terminal').get_all()
+        for _, term in ipairs(terms) do
+          if term.bufnr == vim.api.nvim_get_current_buf() then
+            term:toggle()
+            return
+          end
+        end
+      end,
+      desc = "Toggle Terminal",
+    },
+    { "<esc>", [[<C-\><C-n>]], desc = "Normal Mode" },
   },
 })
 
