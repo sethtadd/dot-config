@@ -71,7 +71,5 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
--- Customize the hover window with borders
-vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-  border = "single",
-})
+-- Border for all floating windows (diagnostics, completion, etc.)
+vim.o.winborder = "single"
