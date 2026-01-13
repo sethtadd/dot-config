@@ -7,6 +7,9 @@ vim.opt.expandtab = true -- Use spaces instead of tabs
 vim.opt.shiftwidth = 2   -- Indent commands use 2 spaces
 vim.opt.tabstop = 2      -- Display tabs as two spaces
 
+-- Vim tabs
+vim.opt.showtabline = 0 -- Never show tab line
+
 -- Indenting
 vim.opt.wrap = true -- Enable soft wrapping of long lines
 vim.opt.breakindent = true -- Indent wrapped lines to align with the first line

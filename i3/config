@@ -49,8 +49,8 @@ set $base-color #1e1e2e
 
 # Set highlighted window border color
 # https://www.reddit.com/r/i3wm/comments/ti2m4r/adding_borders_only_to_the_active_window/
-client.focused #ff0000 $teal-color #ff0000 $peach-color
-client.unfocused #ff000 $base-color #ff000 $peach-color
+client.focused #ff0000 $teal-color #ff0000 $teal-color
+client.unfocused #ff0000 $base-color #ff0000 $teal-color
 
 # NetworkManager is the most popular way to manage wireless networks on Linux,
 # and nm-applet is a desktop environment-independent system tray GUI for it.
