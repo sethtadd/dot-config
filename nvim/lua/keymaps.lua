@@ -64,7 +64,7 @@ wk.add({
     { "gd",          "<cmd>lua vim.lsp.buf.definition()<CR>",                                desc = "Go to Definition" },
     { "gi",          "<cmd>Telescope lsp_implementations<CR>",                               desc = "Go to Implementation" },
     { "gr",          "<cmd>Telescope lsp_references<CR>",                                    desc = "Go to References" },
-    { "K",           "<cmd>lua vim.lsp.buf.hover()<CR>",                                       desc = "Hover Documentation" },
+    { "K",           "<cmd>lua vim.lsp.buf.hover()<CR>",                                     desc = "Hover Documentation" },
     { "[d",          "<cmd>lua vim.diagnostic.goto_prev()<CR>",                              desc = "Previous Diagnostic" },
     { "]d",          "<cmd>lua vim.diagnostic.goto_next()<CR>",                              desc = "Next Diagnostic" },
     { "<leader>l",   group = "lsp" },
