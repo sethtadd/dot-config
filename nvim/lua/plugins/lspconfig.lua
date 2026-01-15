@@ -8,10 +8,25 @@ return {
       -- Set up nvim-cmp capabilities with LSP
       local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
-      local on_attach = function(_, bufnr)
-        -- Format on save
-        vim.api.nvim_buf_create_user_command(bufnr, 'Format', function() vim.lsp.buf.format() end, {})
-        vim.cmd([[autocmd BufWritePre <buffer> lua vim.lsp.buf.format()]])
+      -- Format on save when any LSP attaches
+      vim.api.nvim_create_autocmd("LspAttach", {
+        callback = function(args)
+          local bufnr = args.buf
+          local client = vim.lsp.get_client_by_id(args.data.client_id)
+          if client and client.server_capabilities.documentFormattingProvider then
+            vim.api.nvim_buf_create_user_command(bufnr, 'Format', function() vim.lsp.buf.format() end, {})
+            vim.api.nvim_create_autocmd("BufWritePre", {
+              buffer = bufnr,
+              callback = function()
+                vim.lsp.buf.format({ timeout_ms = 3000 })
+              end,
+            })
+          end
+        end,
+      })
+
+      local on_attach = function(_, _)
+        -- Kept for compatibility, but LspAttach handles format-on-save now
       end
 
       -- Setup LSP servers with mason integration
