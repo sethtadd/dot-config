@@ -32,7 +32,7 @@ vim.opt.smartcase = true
 -- Enable 24 bit RBG colors
 vim.opt.termguicolors = true
 
--- Always show column space for signs are displayed e.g. Git changes or LSP diagnostics
+-- Always show sign column for git signs
 vim.opt.signcolumn = 'yes'
 
 -- Show space characters
@@ -48,6 +48,14 @@ vim.opt.showmode = false
 
 -- Delay before showing diagnostics, linting errors, etc. Default is 4000
 vim.opt.updatetime = 250
+
+-- Show diagnostics as virtual text only, not in the sign column
+vim.diagnostic.config({
+  signs = false,
+  virtual_text = true,
+})
+
+
 
 -- Save undo history
 vim.opt.undofile = true
