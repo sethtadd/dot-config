@@ -49,10 +49,10 @@ vim.opt.showmode = false
 -- Delay before showing diagnostics, linting errors, etc. Default is 4000
 vim.opt.updatetime = 250
 
--- Show diagnostics as virtual text only, not in the sign column
+-- Hide diagnostic virtual text; use keybind to show diagnostics instead
 vim.diagnostic.config({
   signs = false,
-  virtual_text = true,
+  virtual_text = false,
 })
 
 

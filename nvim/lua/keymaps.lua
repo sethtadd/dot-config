@@ -65,8 +65,8 @@ wk.add({
     { "gi",          "<cmd>Telescope lsp_implementations<CR>",                               desc = "Go to Implementation" },
     { "gr",          "<cmd>Telescope lsp_references<CR>",                                    desc = "Go to References" },
     { "K",           "<cmd>lua vim.lsp.buf.hover()<CR>",                                     desc = "Hover Documentation" },
-    { "[d",          "<cmd>lua vim.diagnostic.goto_prev()<CR>",                              desc = "Previous Diagnostic" },
-    { "]d",          "<cmd>lua vim.diagnostic.goto_next()<CR>",                              desc = "Next Diagnostic" },
+    { "[d",          function() vim.diagnostic.jump({ count = -1, float = true }) end,       desc = "Previous Diagnostic" },
+    { "]d",          function() vim.diagnostic.jump({ count = 1, float = true }) end,        desc = "Next Diagnostic" },
     { "<leader>l",   group = "lsp" },
     { "<leader>lr",  "<cmd>lua vim.lsp.buf.rename()<CR>",                                    desc = "Rename Symbol" },
     { "<leader>la",  "<cmd>lua vim.lsp.buf.code_action()<CR>",                               desc = "Code Action" },
@@ -97,25 +97,26 @@ wk.add({
     -- render-markdown.nvim
     { "<leader>m",  "<cmd>lua require('render-markdown').toggle()<CR>", desc = "Toggle Render Markdown" },
 
+    -- FIXME: These commands don't work anymore
     -- Treesitter
-    {
-      -- Incremental selection
-      { "<cr>", "<cmd>lua require'nvim-treesitter.incremental_selection'.init_selection()<CR>",                  desc = "Start Incremental Selection" },
-      { "<cr>", "<cmd>lua require'nvim-treesitter.incremental_selection'.node_incremental()<CR>",                desc = "Increment Node" },
-      { "<bs>", "<cmd>lua require'nvim-treesitter.incremental_selection'.node_decremental()<CR>",                desc = "Decrement Node" },
-
-      --   -- NOTE: Tab and Ctrl-i (Ctrl-i is for moving forward in navigation jumplist) are treated as the same by most terminals, so we need a different key if we want this functionality
-      --   -- { "<tab>", "<cmd>lua require'nvim-treesitter.incremental_selection'.scope_incremental()<CR>",               desc = "Increment Scope" },
-
-      -- Moving between function/class text objects
-      { "]f",   "<cmd>lua require'nvim-treesitter.textobjects.move'.goto_next_start('@function.outer')<CR>",     desc = "Next Function Start" },
-      { "]F",   "<cmd>lua require'nvim-treesitter.textobjects.move'.goto_next_end('@function.outer')<CR>",       desc = "Next Function End" },
-      { "[f",   "<cmd>lua require'nvim-treesitter.textobjects.move'.goto_previous_start('@function.outer')<CR>", desc = "Previous Function Start" },
-      { "[F",   "<cmd>lua require'nvim-treesitter.textobjects.move'.goto_previous_end('@function.outer')<CR>",   desc = "Previous Function End" },
-      -- Gitsigns
-      { "]c",   "<cmd>Gitsigns next_hunk<CR>",                                                                   desc = "Next Change" },
-      { "[c",   "<cmd>Gitsigns prev_hunk<CR>",                                                                   desc = "Previous Change" },
-    },
+    -- {
+    --   -- Incremental selection
+    --   { "<cr>", "<cmd>lua require'nvim-treesitter.incremental_selection'.init_selection()<CR>",                  desc = "Start Incremental Selection" },
+    --   { "<cr>", "<cmd>lua require'nvim-treesitter.incremental_selection'.node_incremental()<CR>",                desc = "Increment Node" },
+    --   { "<bs>", "<cmd>lua require'nvim-treesitter.incremental_selection'.node_decremental()<CR>",                desc = "Decrement Node" },
+    --
+    --   --   -- NOTE: Tab and Ctrl-i (Ctrl-i is for moving forward in navigation jumplist) are treated as the same by most terminals, so we need a different key if we want this functionality
+    --   --   -- { "<tab>", "<cmd>lua require'nvim-treesitter.incremental_selection'.scope_incremental()<CR>",               desc = "Increment Scope" },
+    --
+    --   -- Moving between function/class text objects
+    --   { "]f",   "<cmd>lua require'nvim-treesitter.textobjects.move'.goto_next_start('@function.outer')<CR>",     desc = "Next Function Start" },
+    --   { "]F",   "<cmd>lua require'nvim-treesitter.textobjects.move'.goto_next_end('@function.outer')<CR>",       desc = "Next Function End" },
+    --   { "[f",   "<cmd>lua require'nvim-treesitter.textobjects.move'.goto_previous_start('@function.outer')<CR>", desc = "Previous Function Start" },
+    --   { "[F",   "<cmd>lua require'nvim-treesitter.textobjects.move'.goto_previous_end('@function.outer')<CR>",   desc = "Previous Function End" },
+    --   -- Gitsigns
+    --   { "]c",   "<cmd>Gitsigns next_hunk<CR>",                                                                   desc = "Next Change" },
+    --   { "[c",   "<cmd>Gitsigns prev_hunk<CR>",                                                                   desc = "Previous Change" },
+    -- },
 
   },
 

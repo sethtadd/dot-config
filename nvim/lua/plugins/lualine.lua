@@ -42,7 +42,10 @@ return {
 
           lualine_x = { 'diagnostics', 'lsp_status' },
           lualine_y = { 'searchcount', 'location', 'selectioncount' },
-          lualine_z = { 'tabs', styled_terms }
+          lualine_z = {
+            { 'tabs', symbols = { modified = ' ●' } },
+            styled_terms
+          }
         },
       })
     end,

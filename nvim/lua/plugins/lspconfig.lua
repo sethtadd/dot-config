@@ -1,14 +1,32 @@
+-- =============================================================================
+-- LSP Configuration
+-- =============================================================================
+-- LSP servers (mason-lspconfig): pyright, ts_ls, lua_ls, clangd, eslint, jsonls, biome
+-- Formatters (none-ls):          black
+--
+-- JS/TS linting & formatting:
+--   ts_ls   -> TypeScript LSP (formatting disabled, use biome/eslint)
+--   eslint  -> ESLint LSP (activates when eslint config present)
+--   biome   -> Biome LSP (activates when biome.json present)
+--   jsonls  -> JSON LSP with schemastore (always active for .json)
+--
+-- Python:
+--   pyright -> type checking (strict mode)
+--   black   -> formatting via none-ls
+-- =============================================================================
+
 return {
+  -- ---------------------------------------------------------------------------
+  -- nvim-lspconfig: Core LSP client configuration
+  -- ---------------------------------------------------------------------------
   {
     'neovim/nvim-lspconfig',
-    dependencies = { 'williamboman/mason-lspconfig.nvim', 'hrsh7th/cmp-nvim-lsp' },
+    dependencies = { 'williamboman/mason-lspconfig.nvim', 'hrsh7th/cmp-nvim-lsp', 'b0o/schemastore.nvim' },
     config = function()
       local lspconfig = require('lspconfig')
-
-      -- Set up nvim-cmp capabilities with LSP
       local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
-      -- Format on save when any LSP attaches
+      -- Format on save for any LSP with formatting support
       vim.api.nvim_create_autocmd("LspAttach", {
         callback = function(args)
           local bufnr = args.buf
@@ -25,133 +43,151 @@ return {
         end,
       })
 
-      local on_attach = function(_, _)
-        -- Kept for compatibility, but LspAttach handles format-on-save now
-      end
+      local on_attach = function(_, _) end
 
-      -- Setup LSP servers with mason integration
+      -- Mason-managed LSP servers
       require('mason-lspconfig').setup {
-        ensure_installed = { "pyright", "ts_ls", "lua_ls", "clangd", "eslint" },
+        ensure_installed = { "pyright", "ts_ls", "lua_ls", "clangd", "eslint", "jsonls", "biome" },
         handlers = {
+          -- Default handler for most servers
           function(server_name)
-          -- Settings for individual servers
-          local settings = {}
-          -- Pyright specific settings
-          if server_name == "pyright" then
-            settings = {
-              python = {
-                analysis = {
-                  typeCheckingMode = "strict", -- Set strict type checking
-                  reportUnusedVariable = true, -- Warn on unused variables
-                  reportUnusedFunction = true, -- Warn on unused functions
-                  autoSearchPaths = true,
-                  useLibraryCodeForTypes = true,
-                  include = { "**/*.py" } -- Set include for all .py files
+            local settings = {}
+
+            -- Python: strict type checking
+            if server_name == "pyright" then
+              settings = {
+                python = {
+                  analysis = {
+                    typeCheckingMode = "strict",
+                    reportUnusedVariable = true,
+                    reportUnusedFunction = true,
+                    autoSearchPaths = true,
+                    useLibraryCodeForTypes = true,
+                    include = { "**/*.py" }
+                  }
                 }
               }
-            }
-          end
-          -- Lua specific settings
-          if server_name == "lua_ls" then
-            settings = {
-              Lua = {
-                runtime = {
-                  version = "LuaJIT",
+            end
+
+            -- Lua: Neovim-aware settings
+            if server_name == "lua_ls" then
+              settings = {
+                Lua = {
+                  runtime = { version = "LuaJIT" },
+                  diagnostics = { globals = { "vim" } },
+                  workspace = { library = vim.api.nvim_get_runtime_file("", true) },
+                  telemetry = { enable = false },
                 },
-                diagnostics = {
-                  globals = { "vim" },
+              }
+            end
+
+            -- TypeScript: disable formatting (use biome/eslint instead)
+            if server_name == "ts_ls" then
+              lspconfig.ts_ls.setup {
+                on_attach = function(client, bufnr)
+                  client.server_capabilities.documentFormattingProvider = false
+                  client.server_capabilities.documentRangeFormattingProvider = false
+                end,
+                capabilities = capabilities,
+                flags = { debounce_text_changes = 150 },
+              }
+              return
+            end
+
+            -- JSON: schemastore integration for validation/completion
+            if server_name == "jsonls" then
+              lspconfig.jsonls.setup {
+                on_attach = on_attach,
+                capabilities = capabilities,
+                flags = { debounce_text_changes = 150 },
+                settings = {
+                  json = {
+                    schemas = require('schemastore').json.schemas(),
+                    validate = { enable = true },
+                  },
                 },
-                workspace = {
-                  library = vim.api.nvim_get_runtime_file("", true),
+              }
+              return
+            end
+
+            -- C/C++: clangd with clang-tidy integration
+            if server_name == "clangd" then
+              lspconfig.clangd.setup {
+                on_attach = on_attach,
+                capabilities = capabilities,
+                flags = { debounce_text_changes = 150 },
+                cmd = {
+                  "clangd",
+                  "--background-index",
+                  "--clang-tidy",
+                  "--compile-commands-dir=.",
+                  "--query-driver=/usr/bin/g++,/usr/bin/clang++,*-gcc,*-g++",
                 },
-                telemetry = {
-                  enable = false,
+                init_options = {
+                  fallbackFlags = { "-std=c++20", "-I/usr/include", "-I/usr/local/include" },
                 },
-              },
-            }
-          end
-          -- Clangd specific settings
-          if server_name == "clangd" then
-            lspconfig.clangd.setup {
+              }
+              return
+            end
+
+            -- All other servers: default setup
+            lspconfig[server_name].setup {
               on_attach = on_attach,
               capabilities = capabilities,
               flags = { debounce_text_changes = 150 },
-              cmd = {
-                "clangd",
-                "--background-index",
-                "--clang-tidy",
-                "--compile-commands-dir=.", -- adjust if your compile_commands.json is elsewhere
-                "--query-driver=/usr/bin/g++,/usr/bin/clang++,*-gcc,*-g++",
-                -- Uncomment while debugging:
-                -- "--log=verbose", "--pretty"
-              },
-              -- Optional fallback for files missing from the DB:
-              init_options = {
-                fallbackFlags = {
-                  "-std=c++20",
-                  "-I/usr/include",
-                  "-I/usr/local/include",
-                },
-              },
+              settings = settings,
             }
-            return
-          end
-
-          -- Setup LSP servers
-          lspconfig[server_name].setup {
-            on_attach = on_attach,
-            capabilities = capabilities,
-            flags = {
-              debounce_text_changes = 150,
-            },
-            settings = settings,
-          }
-        end,
+          end,
         },
       }
     end,
   },
 
+  -- ---------------------------------------------------------------------------
+  -- mason.nvim: LSP/linter/formatter installer
+  -- ---------------------------------------------------------------------------
   {
     'williamboman/mason.nvim',
     config = function()
-      -- Initialize Mason
       require('mason').setup()
     end,
   },
 
+  -- ---------------------------------------------------------------------------
+  -- none-ls: Formatting for tools without LSP support (currently just black)
+  -- ---------------------------------------------------------------------------
   {
-  "nvimtools/none-ls.nvim",
-  dependencies = { "nvim-lua/plenary.nvim" },
-  lazy = false,
-  config = function()
-    local null_ls = require("null-ls")
+    "nvimtools/none-ls.nvim",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    lazy = false,
+    config = function()
+      local null_ls = require("null-ls")
 
-    null_ls.setup({
-      sources = {
-        null_ls.builtins.diagnostics.eslint_d,
-        null_ls.builtins.code_actions.eslint_d,
-        null_ls.builtins.formatting.prettierd,
-
-        null_ls.builtins.formatting.black.with({
-          extra_args = { "--fast" },
-        }),
-      },
-      on_attach = function(client, bufnr)
-        if client.server_capabilities.documentFormattingProvider then
-          vim.api.nvim_set_option_value("formatexpr", "v:lua.vim.lsp.formatexpr()", { buf = bufnr })
-        end
-      end,
-    })
-  end,
-},
-
-{
-  "jay-babu/mason-null-ls.nvim",
-  dependencies = { "nvimtools/none-ls.nvim" },
-  opts = {
-    ensure_installed = { "black", "eslint_d", "prettierd" },
-    automatic_installation = true,
+      null_ls.setup({
+        sources = {
+          -- Python: black formatter
+          null_ls.builtins.formatting.black.with({
+            extra_args = { "--fast" },
+          }),
+        },
+        on_attach = function(client, bufnr)
+          if client.server_capabilities.documentFormattingProvider then
+            vim.api.nvim_set_option_value("formatexpr", "v:lua.vim.lsp.formatexpr()", { buf = bufnr })
+          end
+        end,
+      })
+    end,
   },
-},
+
+  -- ---------------------------------------------------------------------------
+  -- mason-null-ls: Auto-install none-ls sources via Mason
+  -- ---------------------------------------------------------------------------
+  {
+    "jay-babu/mason-null-ls.nvim",
+    dependencies = { "nvimtools/none-ls.nvim" },
+    opts = {
+      ensure_installed = { "black" },
+      automatic_installation = true,
+    },
+  },
 }
