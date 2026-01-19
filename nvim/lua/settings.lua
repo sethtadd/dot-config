@@ -17,9 +17,10 @@ vim.opt.showbreak = "╰─" -- Add some characters to the start of wrapped line
 vim.opt.linebreak = true -- When line wrapping, don't break in the middle of words
 
 -- Folding
-vim.opt.foldmethod = 'expr'
-vim.opt.foldexpr = 'nvim_treesitter#foldexpr()' -- Use Treesitter for folding
-vim.opt.foldlevelstart = 99                      -- Start with all folds open
+-- Handled by nvim-ufo plugin
+vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
+vim.o.foldlevelstart = 99
+vim.o.foldenable = true
 
 -- Clear highlights on search when pressing <Esc> in normal mode
 --  See `:help hlsearch`
