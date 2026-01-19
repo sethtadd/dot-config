@@ -61,17 +61,12 @@ wk.add({
     { "<leader>zi",  ":'<,'>ZkInsertLinkAtSelection<cr>",                                    desc = "Insert Link At Selection" },
 
     -- LSP actions
-    { "gd",          "<cmd>lua vim.lsp.buf.definition()<CR>",                                desc = "Go to Definition" },
-    { "gi",          "<cmd>Telescope lsp_implementations<CR>",                               desc = "Go to Implementation" },
-    { "gr",          "<cmd>Telescope lsp_references<CR>",                                    desc = "Go to References" },
-    { "K",           "<cmd>lua vim.lsp.buf.hover()<CR>",                                     desc = "Hover Documentation" },
+    -- Override "[d and ]d to show the diagnostic floating window
     { "[d",          function() vim.diagnostic.jump({ count = -1, float = true }) end,       desc = "Previous Diagnostic" },
     { "]d",          function() vim.diagnostic.jump({ count = 1, float = true }) end,        desc = "Next Diagnostic" },
-    { "<leader>l",   group = "lsp" },
-    { "<leader>lr",  "<cmd>lua vim.lsp.buf.rename()<CR>",                                    desc = "Rename Symbol" },
-    { "<leader>la",  "<cmd>lua vim.lsp.buf.code_action()<CR>",                               desc = "Code Action" },
-    { "<leader>lf",  "<cmd>lua vim.lsp.buf.format()<CR>",                                    desc = "Format Document" },
-    { "<leader>ls",  "<cmd>lua vim.lsp.buf.signature_help()<CR>",                            desc = "Signature Help" },
+    -- Override "gd" and "gD" to use LSP definitions and declarations
+    { "gd",          function() vim.lsp.buf.definition() end,                                desc = "Goto Definition" },
+    { "gD",          function() vim.lsp.buf.declaration() end,                               desc = "Goto Declaration" },
 
     -- Git actions
     { "<leader>g",   group = "Git" },
@@ -86,6 +81,10 @@ wk.add({
     },
     { "<leader>gs", "<cmd>Git<CR>",                                     desc = "Git Status" },
     { "<leader>gb", "<cmd>Git blame<CR>",                               desc = "Git Blame" },
+    -- Gitsigns
+    { "]c",   "<cmd>Gitsigns nav_hunk next<CR>",                                                                   desc = "Next Change" },
+    { "[c",   "<cmd>Gitsigns nav_hunk prev<CR>",                                                                   desc = "Previous Change" },
+
 
     -- Key mappings for toggleterm
     { "<C-\\>",     "<cmd>exe v:count1 . 'ToggleTerm'<CR>",             desc = "Toggle Terminal" },
@@ -97,37 +96,23 @@ wk.add({
     -- render-markdown.nvim
     { "<leader>m",  "<cmd>lua require('render-markdown').toggle()<CR>", desc = "Toggle Render Markdown" },
 
-    -- FIXME: These commands don't work anymore
-    -- Treesitter
-    -- {
-    --   -- Incremental selection
-    --   { "<cr>", "<cmd>lua require'nvim-treesitter.incremental_selection'.init_selection()<CR>",                  desc = "Start Incremental Selection" },
-    --   { "<cr>", "<cmd>lua require'nvim-treesitter.incremental_selection'.node_incremental()<CR>",                desc = "Increment Node" },
-    --   { "<bs>", "<cmd>lua require'nvim-treesitter.incremental_selection'.node_decremental()<CR>",                desc = "Decrement Node" },
-    --
-    --   --   -- NOTE: Tab and Ctrl-i (Ctrl-i is for moving forward in navigation jumplist) are treated as the same by most terminals, so we need a different key if we want this functionality
-    --   --   -- { "<tab>", "<cmd>lua require'nvim-treesitter.incremental_selection'.scope_incremental()<CR>",               desc = "Increment Scope" },
-    --
-    --   -- Moving between function/class text objects
-    --   { "]f",   "<cmd>lua require'nvim-treesitter.textobjects.move'.goto_next_start('@function.outer')<CR>",     desc = "Next Function Start" },
-    --   { "]F",   "<cmd>lua require'nvim-treesitter.textobjects.move'.goto_next_end('@function.outer')<CR>",       desc = "Next Function End" },
-    --   { "[f",   "<cmd>lua require'nvim-treesitter.textobjects.move'.goto_previous_start('@function.outer')<CR>", desc = "Previous Function Start" },
-    --   { "[F",   "<cmd>lua require'nvim-treesitter.textobjects.move'.goto_previous_end('@function.outer')<CR>",   desc = "Previous Function End" },
-    --   -- Gitsigns
-    --   { "]c",   "<cmd>Gitsigns next_hunk<CR>",                                                                   desc = "Next Change" },
-    --   { "[c",   "<cmd>Gitsigns prev_hunk<CR>",                                                                   desc = "Previous Change" },
-    -- },
-
+    -- Treesitter textobjects (main branch API)
+    {
+      -- Moving between function/class text objects
+      { "]f", "<cmd>lua require'nvim-treesitter-textobjects.move'.goto_next_start('@function.outer')<CR>",     desc = "Next Function Start" },
+      { "]F", "<cmd>lua require'nvim-treesitter-textobjects.move'.goto_next_end('@function.outer')<CR>",       desc = "Next Function End" },
+      { "[f", "<cmd>lua require'nvim-treesitter-textobjects.move'.goto_previous_start('@function.outer')<CR>", desc = "Previous Function Start" },
+      { "[F", "<cmd>lua require'nvim-treesitter-textobjects.move'.goto_previous_end('@function.outer')<CR>",   desc = "Previous Function End" },
+    },
   },
 
-  -- Visual mode only
+  -- Treesitter text object selection mappings
   {
-    mode = { "v" },
-    -- Treesitter text object selection mappings
-    { "af", "<cmd>lua require'nvim-treesitter.textobjects.select'.select_textobject('@function.outer')<CR>", desc = "Around Function" },
-    { "if", "<cmd>lua require'nvim-treesitter.textobjects.select'.select_textobject('@function.inner')<CR>", desc = "Inside Function" },
-    { "ac", "<cmd>lua require'nvim-treesitter.textobjects.select'.select_textobject('@class.outer')<CR>",    desc = "Around Class" },
-    { "ic", "<cmd>lua require'nvim-treesitter.textobjects.select'.select_textobject('@class.inner')<CR>",    desc = "Inside Class" },
+    mode = { "o" }, -- Operator-pending mode only, allows daf, yaf, caf, etc.
+    { "af", "<cmd>lua require'nvim-treesitter-textobjects.select'.select_textobject('@function.outer')<CR>", desc = "Around Function" },
+    { "if", "<cmd>lua require'nvim-treesitter-textobjects.select'.select_textobject('@function.inner')<CR>", desc = "Inside Function" },
+    { "ac", "<cmd>lua require'nvim-treesitter-textobjects.select'.select_textobject('@class.outer')<CR>",    desc = "Around Class" },
+    { "ic", "<cmd>lua require'nvim-treesitter-textobjects.select'.select_textobject('@class.inner')<CR>",    desc = "Inside Class" },
   },
 
   -- Terminal mode

@@ -19,7 +19,7 @@ vim.opt.linebreak = true -- When line wrapping, don't break in the middle of wor
 -- Folding
 vim.opt.foldmethod = 'expr'
 vim.opt.foldexpr = 'nvim_treesitter#foldexpr()' -- Use Treesitter for folding
-vim.opt.foldlevel = 99                          -- Start with all folds open
+vim.opt.foldlevelstart = 99                      -- Start with all folds open
 
 -- Clear highlights on search when pressing <Esc> in normal mode
 --  See `:help hlsearch`
@@ -49,10 +49,12 @@ vim.opt.showmode = false
 -- Delay before showing diagnostics, linting errors, etc. Default is 4000
 vim.opt.updatetime = 250
 
--- Hide diagnostic virtual text; use keybind to show diagnostics instead
+-- Only show virtual text for errors
 vim.diagnostic.config({
   signs = false,
-  virtual_text = false,
+  virtual_text = {
+    severity = { min = vim.diagnostic.severity.ERROR },
+  },
 })
 
 
