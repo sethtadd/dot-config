@@ -3,16 +3,24 @@
 -- - Only attach if the repo provides TypeScript (node_modules/typescript)
 -- - Only attach if tsconfig/jsconfig exists
 
-local function pkg_root(bufnr)
-  return vim.fs.root(bufnr, { "package.json" })
-end
+local function ts_root(bufnr)
+  local fname = vim.api.nvim_buf_get_name(bufnr)
+  if fname == "" then
+    return nil
+  end
 
-local function exists(path)
-  return path and vim.uv.fs_stat(path) ~= nil
-end
+  local found = vim.fs.find("node_modules/typescript", {
+    path = fname,
+    upward = true,
+    type = "directory",
+    limit = 1,
+  })[1]
 
-local function has_repo_typescript(root)
-  return exists(root .. "/node_modules/typescript")
+  if not found then
+    return nil
+  end
+
+  return vim.fs.dirname(vim.fs.dirname(found))
 end
 
 local function has_ts_config(bufnr, root)
@@ -39,14 +47,9 @@ return {
 
   -- Attach only in Node packages that actually ship TypeScript.
   root_dir = function(bufnr, on_dir)
-    local root = pkg_root(bufnr)
+    local root = ts_root(bufnr)
     if not root then
-      vim.notify("ts_ls: no package.json found", vim.log.levels.WARN)
-      return
-    end
-
-    if not has_repo_typescript(root) then
-      vim.notify("ts_ls: no node_modules/typescript in " .. root, vim.log.levels.WARN)
+      vim.notify("ts_ls: no node_modules/typescript found", vim.log.levels.WARN)
       return
     end
 

@@ -3,15 +3,14 @@ local function npm_bin(ctx, bin)
   if not ctx.filename or ctx.filename == "" then
     return nil
   end
-  local root = vim.fs.root(ctx.filename, { "package.json" })
-  if not root then
-    return nil
-  end
-  local p = root .. "/node_modules/.bin/" .. bin
-  if vim.uv.fs_stat(p) then
-    return p
-  end
-  return nil
+  local found = vim.fs.find("node_modules/.bin/" .. bin, {
+    path = ctx.filename,
+    upward = true,
+    type = "file",
+    limit = 1,
+  })[1]
+
+  return found
 end
 
 -- Only return command if binary exists
