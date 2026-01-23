@@ -4,8 +4,8 @@ vim.opt.relativenumber = true
 
 -- Tabs
 vim.opt.expandtab = true -- Use spaces instead of tabs
-vim.opt.shiftwidth = 2   -- Indent commands use 2 spaces
-vim.opt.tabstop = 2      -- Display tabs as two spaces
+vim.opt.shiftwidth = 2 -- Indent commands use 2 spaces
+vim.opt.tabstop = 2 -- Display tabs as two spaces
 
 -- Vim tabs
 vim.opt.showtabline = 0 -- Never show tab line
@@ -24,7 +24,7 @@ vim.o.foldenable = true
 
 -- Clear highlights on search when pressing <Esc> in normal mode
 --  See `:help hlsearch`
-vim.keymap.set('n', '<esc>', '<cmd>nohlsearch<CR>')
+vim.keymap.set("n", "<esc>", "<cmd>nohlsearch<CR>")
 
 -- Use smartcase when / searching
 vim.opt.ignorecase = true
@@ -34,11 +34,11 @@ vim.opt.smartcase = true
 vim.opt.termguicolors = true
 
 -- Always show sign column for git signs
-vim.opt.signcolumn = 'yes'
+vim.opt.signcolumn = "yes"
 
 -- Show space characters
 vim.opt.list = true
-vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
+vim.opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
 
 -- Highlight cursor line
 vim.opt.cursorline = true
@@ -58,8 +58,6 @@ vim.diagnostic.config({
   },
 })
 
-
-
 -- Save undo history
 vim.opt.undofile = true
 
@@ -69,13 +67,13 @@ vim.opt.splitbelow = true
 
 -- Use system clipboard as default register, run async to reduce startup time
 vim.schedule(function()
-  vim.opt.clipboard = 'unnamedplus'
+  vim.opt.clipboard = "unnamedplus"
 end)
 
 -- Highlight when yanking (copying) text
-vim.api.nvim_create_autocmd('TextYankPost', {
-  desc = 'Highlight when yanking (copying) text',
-  group = vim.api.nvim_create_augroup('highlight-yank', { clear = true }),
+vim.api.nvim_create_autocmd("TextYankPost", {
+  desc = "Highlight when yanking (copying) text",
+  group = vim.api.nvim_create_augroup("highlight-yank", { clear = true }),
   callback = function()
     --  See `:help vim.highlight.on_yank()`
     vim.highlight.on_yank()

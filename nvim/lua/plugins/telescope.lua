@@ -1,6 +1,6 @@
 return {
-  'nvim-telescope/telescope.nvim',
-  dependencies = { 'nvim-lua/plenary.nvim' },
+  "nvim-telescope/telescope.nvim",
+  dependencies = { "nvim-lua/plenary.nvim" },
 
   -- Override horizontal layout to remove titles
   config = function(_, opts)
@@ -43,7 +43,7 @@ return {
 
   opts = {
     defaults = {
-      borderchars = { '─', '│', '─', '│', '┌', '┐', '┘', '└' },
+      borderchars = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
       layout_config = {
         width = 0.90,
         height = 0.90,
@@ -63,9 +63,9 @@ return {
         mappings = {
           n = {
             ["dd"] = "delete_buffer",
-          }
-        }
-      }
-    }
+          },
+        },
+      },
+    },
   },
 }

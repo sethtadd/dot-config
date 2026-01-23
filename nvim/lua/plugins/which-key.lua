@@ -2,11 +2,11 @@
 -- With lazy the plugin will be automatically loaded when it is required somewhere
 
 return {
-	{
-		"folke/which-key.nvim",
+  {
+    "folke/which-key.nvim",
     event = "VeryLazy",
     opts = {
       preset = "helix",
     },
-	},
+  },
 }

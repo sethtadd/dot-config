@@ -1,5 +1,4 @@
-return
-{
+return {
   "zk-org/zk-nvim",
   config = function()
     require("zk").setup({
@@ -16,5 +15,5 @@ return
         },
       },
     })
-  end
+  end,
 }

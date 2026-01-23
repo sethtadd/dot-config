@@ -1,13 +1,13 @@
 return {
   {
-    'nvim-lualine/lualine.nvim',
+    "nvim-lualine/lualine.nvim",
     config = function()
-      local colors = require('catppuccin.palettes').get_palette('mocha')
+      local colors = require("catppuccin.palettes").get_palette("mocha")
 
       local styled_terms = {
         function()
-          local terms = require('toggleterm.terminal').get_all()
-          return #terms .. '  '
+          local terms = require("toggleterm.terminal").get_all()
+          return #terms .. "  "
         end,
         color = function()
           return { fg = colors.green, bg = colors.surface2 }
@@ -18,35 +18,37 @@ return {
       }
 
       local styled_filename = {
-        'filename',
+        "filename",
         path = 1,
-        symbols = { modified = '●', readonly = '󰊪' },
+        symbols = { modified = "●", readonly = "󰊪" },
         color = function()
           local bufnr = vim.fn.winbufnr(vim.g.statusline_winid)
-          if vim.bo[bufnr].modified then return { fg = colors.red } end
+          if vim.bo[bufnr].modified then
+            return { fg = colors.red }
+          end
         end,
       }
 
-      require('lualine').setup({
+      require("lualine").setup({
         options = {
-          theme = 'auto',
+          theme = "auto",
           globalstatus = true,
 
-          section_separators = { left = '', right = '' },
-          component_separators = { left = '|', right = '' }
+          section_separators = { left = "", right = "" },
+          component_separators = { left = "|", right = "" },
         },
 
         sections = {
-          lualine_a = { 'mode' },
-          lualine_b = { 'branch', 'diff' },
+          lualine_a = { "mode" },
+          lualine_b = { "branch", "diff" },
           lualine_c = { styled_filename },
 
-          lualine_x = { 'diagnostics', 'lsp_status' },
-          lualine_y = { 'searchcount', 'location', 'selectioncount' },
+          lualine_x = { "diagnostics", "lsp_status" },
+          lualine_y = { "searchcount", "location", "selectioncount" },
           lualine_z = {
-            { 'tabs', symbols = { modified = ' ●' } },
-            styled_terms
-          }
+            { "tabs", symbols = { modified = " ●" } },
+            styled_terms,
+          },
         },
       })
     end,
