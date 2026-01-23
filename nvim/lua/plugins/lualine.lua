@@ -19,6 +19,7 @@ return {
 
       local styled_filename = {
         'filename',
+        path = 1,
         symbols = { modified = '●', readonly = '󰊪' },
         color = function()
           local bufnr = vim.fn.winbufnr(vim.g.statusline_winid)

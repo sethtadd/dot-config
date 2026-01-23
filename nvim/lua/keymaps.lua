@@ -228,3 +228,11 @@ wk.add({
     },
   },
 })
+
+-- Don't lose focus on the quickfix list when opening an entry
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "qf",
+  callback = function()
+    vim.keymap.set("n", "<CR>", "<CR><C-w>p", { buffer = true, silent = true, desc = "Open entry and keep focus" })
+  end,
+})

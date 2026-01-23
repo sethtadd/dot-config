@@ -1,7 +1,12 @@
 {
   "$schema": "https://opencode.ai/config.json",
+  "tui": {
+    "scroll_speed": 3,
+    "diff_style": "auto"
+  },
   "theme": "catppuccin",
   "autoupdate": true,
+  // Allow read-only access by default, ask for write permissions
   "permission": {
     "read": "allow",
     "edit": "ask",
