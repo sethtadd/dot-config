@@ -34,23 +34,26 @@ exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork -c 1e1e2e
 exec --no-startup-id feh --bg-fill ~/Pictures/wallpapers/flowering-rain.png
 
 # Gaps
-gaps inner 20
-# gaps outer 10
+gaps inner 0
+gaps outer 0
 
 # Remove titlebars and borders
-default_border pixel 1
-default_floating_border pixel 1
+default_border pixel 0
+default_floating_border pixel 0
 # for_window [class="^.*"] border pixel 0
 
 # https://catppuccin.com/palette
 set $peach-color #fab387
 set $teal-color #94e2d5
 set $base-color #1e1e2e
+set $active-tab-color #a6adc8
+set $inactive-tab-color #313244
+set $text-color #cdd6f4
 
 # Set highlighted window border color
 # https://www.reddit.com/r/i3wm/comments/ti2m4r/adding_borders_only_to_the_active_window/
-client.focused #ff0000 $teal-color #ff0000 $teal-color
-client.unfocused #ff0000 $base-color #ff0000 $teal-color
+client.focused $active-tab-color $active-tab-color $base-color $active-tab-color
+client.unfocused $inactive-tab-color $inactive-tab-color $text-color $inactive-tab-color
 
 # NetworkManager is the most popular way to manage wireless networks on Linux,
 # and nm-applet is a desktop environment-independent system tray GUI for it.
@@ -120,6 +123,9 @@ bindsym $mod+s layout stacking
 bindsym $mod+w layout tabbed
 bindsym $mod+e layout toggle split
 
+# default workspace layout
+workspace_layout tabbed
+
 # toggle tiling / floating
 bindsym $mod+Shift+space floating toggle
 
@@ -144,6 +150,12 @@ set $ws7 "7"
 set $ws8 "8"
 set $ws9 "9"
 set $ws10 "10"
+
+# Bind workspaces 1-4 to laptop screen
+workspace $ws1 output eDP-1
+workspace $ws2 output eDP-1
+workspace $ws3 output eDP-1
+workspace $ws4 output eDP-1
 
 # switch to workspace
 bindsym $mod+1 workspace number $ws1
@@ -212,11 +224,12 @@ exec_always --no-startup-id sh -c "killall -q polybar; while pgrep -u $UID -x po
 # redshift
 exec_always --no-startup-id sh -c 'redshift -xr; redshift -r'
 
+# monitor hotplug layout
+exec_always --no-startup-id ~/.config/i3/monitor-hotplug.sh
+
 # Natural scrolling
 exec --no-startup-id xinput set-prop "PIXA3854:00 093A:0274 Touchpad" "libinput Natural Scrolling Enabled" 1
 exec --no-startup-id xinput set-prop "PIXA3854:00 093A:0274 Mouse" "libinput Natural Scrolling Enabled" 1
 
-# slow down mouse input for logitech superlight mouse
-# exec --no-startup-id xinput set-prop "Logitech USB Receiver" "libinput Accel Speed" -1.0
-
-exec_always --no-startup-id sh -c 'sleep 2; DEV="Logitech USB Receiver"; ID=$(xinput list --id-only "$DEV" 2>/dev/null); if [ -n "$ID" ]; then; xinput set-prop $ID "libinput Accel Speed" -0.8; fi'
+# slow down mouse input for logitech pro x wireless mouse (handles changing ids)
+exec_always --no-startup-id sh -c 'sleep 2; for id in $(xinput list --id-only); do name=$(xinput list --name-only "$id" 2>/dev/null); if [ "$name" = "Logitech PRO X Wireless" ]; then xinput set-prop "$id" "libinput Accel Speed" -0.8 2>/dev/null; fi; done'
