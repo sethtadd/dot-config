@@ -2,6 +2,8 @@
 set -euo pipefail
 
 internal_output="eDP-1"
+wallpaper="${HOME}/Pictures/wallpapers/flowering-rain.png"
+external_rotate="normal"
 connected_outputs=$(xrandr --query | awk '/ connected/ {print $1}')
 external_output=""
 
@@ -15,7 +17,7 @@ done
 all_outputs=$(xrandr --query | awk '/(connected|disconnected)/ {print $1}')
 
 if [ -n "$external_output" ]; then
-  xrandr --output "$internal_output" --auto --output "$external_output" --auto --above "$internal_output"
+  xrandr --output "$internal_output" --auto --output "$external_output" --auto --rotate "$external_rotate" --above "$internal_output"
 
   for output in $all_outputs; do
     if [ "$output" != "$internal_output" ] && [ "$output" != "$external_output" ]; then
@@ -30,4 +32,8 @@ else
       xrandr --output "$output" --off
     fi
   done
+fi
+
+if [ -f "$wallpaper" ]; then
+  feh --bg-fill "$wallpaper"
 fi

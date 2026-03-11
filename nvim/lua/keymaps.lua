@@ -189,6 +189,7 @@ wk.add({
     },
 
     -- LSP actions
+    { "gr", group = "LSP References" },
     -- Override "[d and ]d to show the diagnostic floating window
     {
       "[d",
@@ -218,6 +219,13 @@ wk.add({
         vim.lsp.buf.declaration()
       end,
       desc = "Goto Declaration",
+    },
+    {
+      "grc",
+      function()
+        vim.lsp.buf.incoming_calls()
+      end,
+      desc = "Incoming Calls",
     },
 
     -- Git actions
