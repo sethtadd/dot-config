@@ -1,0 +1,1 @@
+bluetooth_policy.policy["media-role.use-headset-profile"] = false -- Disable automatic switching to headset profile when a Bluetooth headset is connected. This allows the user to manually select the desired audio profile without being forced into the headset mode, which may have lower audio quality compared to the A2DP profile.

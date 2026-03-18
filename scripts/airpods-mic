@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+device_id="$(wpctl status | awk '
+  /AirPods Max.*\[bluez5\]/ {
+    if (match($0, /[0-9]+\./)) {
+      print substr($0, RSTART, RLENGTH - 1)
+      exit
+    }
+  }
+')"
+
+if [[ -z "${device_id}" ]]; then
+  printf 'AirPods Max not found in wpctl status\n' >&2
+  exit 1
+fi
+
+profile_id="$({ pw-cli enum-params "$device_id" EnumProfile || true; } | awk '
+  /Prop: key Spa:Pod:Object:Param:Profile:index/ { want_index = 1; next }
+  want_index && /Int / { profile_index = $2; want_index = 0; next }
+  /Prop: key Spa:Pod:Object:Param:Profile:name/ { want_name = 1; next }
+  want_name && /String "headset-head-unit-msbc"/ { print profile_index; exit }
+  want_name { want_name = 0 }
+')"
+
+if [[ -z "${profile_id}" ]]; then
+  printf 'mSBC headset profile not available for AirPods Max\n' >&2
+  exit 1
+fi
+
+wpctl set-profile "$device_id" "$profile_id"
+printf 'AirPods Max set to headset mic mode (%s)\n' "$profile_id"
