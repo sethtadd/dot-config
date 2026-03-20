@@ -15,6 +15,15 @@
 !opencode/
 !scripts/
 !wireplumber/
+!gtk-3.0/
+!gtk-4.0/
+!xdg-desktop-portal/
+gtk-3.0/*
+gtk-4.0/*
+xdg-desktop-portal/*
+!gtk-3.0/settings.ini
+!gtk-4.0/settings.ini
+!xdg-desktop-portal/*.conf
 
 # tmux git-pull's it's plugins under it's root folder,
 # so we need to ignore them to prevent nested-git-repo issues
