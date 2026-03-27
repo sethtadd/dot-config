@@ -2,7 +2,7 @@
 set -euo pipefail
 
 internal_output="eDP-1"
-wallpaper="${HOME}/Pictures/wallpapers/flowering-rain.png"
+wallpaper="${HOME}/Pictures/wallpapers/solar-system.jpg"
 external_rotate="normal"
 connected_outputs=$(xrandr --query | awk '/ connected/ {print $1}')
 external_output=""

@@ -31,7 +31,7 @@ exec --no-startup-id dex --autostart --environment i3
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork -c 1e1e2e
 
 # Wallpaper
-exec --no-startup-id feh --bg-fill ~/Pictures/wallpapers/flowering-rain.png
+exec_always --no-startup-id feh --bg-fill ~/Pictures/wallpapers/solar-system.jpg
 
 # Gaps
 gaps inner 0
