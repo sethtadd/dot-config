@@ -1,3 +1,7 @@
+# Machine-local setup runs first; shared prompt and aliases take precedence.
+[[ -r "$HOME/.bash_aliases" ]] && source "$HOME/.bash_aliases"
+[[ -r "$HOME/.zshrc.local" ]] && source "$HOME/.zshrc.local"
+
 # ── Colors ────────────────────────────────────────────────────────────
 autoload -U colors && colors
 
@@ -21,6 +25,11 @@ PROMPT='%(!.%{$fg[red]%}.%{$fg[green]%})%~$(_git_prompt)%{$reset_color%} '
 # ── Completion ────────────────────────────────────────────────────────
 autoload -Uz compinit && compinit
 autoload -U +X bashcompinit && bashcompinit
+
+# The SDK PATH is machine-local; completion needs bashcompinit first.
+if [[ -r "$HOME/google-cloud-sdk/completion.zsh.inc" ]]; then
+  source "$HOME/google-cloud-sdk/completion.zsh.inc"
+fi
 zmodload -i zsh/complist
 
 unsetopt menu_complete
@@ -107,6 +116,7 @@ add-zsh-hook preexec _title_preexec
 
 # ── ls colors ─────────────────────────────────────────────────────────
 alias ls='ls --color=auto'
+alias n='nvim'
 
 # ── Git aliases ───────────────────────────────────────────────────────
 alias ga='git add'
@@ -119,9 +129,12 @@ alias gp='git push'
 alias gsw='git switch'
 alias gst='git status'
 alias gwt='git worktree'
-
-# ── Aliases & functions ───────────────────────────────────────────────
-source ~/.bash_aliases
+alias g='git'
+alias gcmsg='git commit --message'
+alias gsh='git show'
+alias grb='git rebase'
+alias gdt='git diff-tree --no-commit-id --name-only -r'
+alias gwta='git worktree add'
 
 # ── Environment ───────────────────────────────────────────────────────
 export PATH="$PATH:/usr/local/go/bin"
