@@ -1,11 +1,20 @@
 configuration {
+    disable-history: true;
+    parse-known-hosts: false;
+    parse-hosts: false;
+    sidebar-mode: true;
+    display-drun: "Applications";
+    display-ssh: "SSH";
+    display-window: "Windows";
+
     // keybindings info: https://github.com/davatorium/rofi/blob/next/doc/rofi-keys.5.markdown
 
     kb-mode-complete: "";
     kb-mode-next: "Ctrl+Tab,Ctrl+l";
     kb-mode-previous: "Ctrl+h";
-    kb-roow-down: "Down,Control+n";
-    kb-roow-down: "Down,Control+n";
+    kb-row-down: "Down,Control+n,Control+j";
+    kb-row-up: "Up,Control+p,Control+k";
+    kb-remove-to-eol: "";
     kb-remove-char-back: "BackSpace";
     kb-accept-entry: "Return,Ctrl+m";
 }
@@ -37,10 +46,10 @@ window {
     border-color:       @teal;
 
     location:   center;
-    width:      360px;
+    width:      60%;
     padding: 18px;
 
-    children: [ inputbar, listview ];
+    children: [ inputbar, listview, mode-switcher ];
     spacing: 18px;
 }
 
@@ -63,7 +72,7 @@ entry {
 }
 
 listview {
-    lines:          8;
+    lines:          12;
     columns:        1;
     fixed-height:   true;
     scrollbar:      false;
@@ -105,4 +114,20 @@ element-text {
 element-icon {
     size:           1em;
     vertical-align: 0.5;
+}
+
+mode-switcher {
+    spacing: 8px;
+    background-color: @base;
+}
+
+button {
+    padding: 8px 12px;
+    background-color: @surface0;
+    text-color: @text;
+}
+
+button selected {
+    background-color: @rosewater;
+    text-color: @surface0;
 }

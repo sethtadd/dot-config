@@ -71,6 +71,9 @@ bindsym XF86AudioPlay exec --no-startup-id playerctl play-pause
 bindsym XF86MonBrightnessUp exec --no-startup-id ~/.config/i3/brightness-notify.sh up
 bindsym XF86MonBrightnessDown exec --no-startup-id ~/.config/i3/brightness-notify.sh down
 
+# Select a screenshot region after releasing Print Screen.
+bindsym --release Print exec --no-startup-id sh ~/.config/i3/screenshot.sh
+
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
@@ -91,7 +94,7 @@ focus_follows_mouse no
 mouse_warping none
 
 # start rofi
-bindsym $mod+d exec "rofi -modi drun,ssh,run -show drun"
+bindsym $mod+d exec "rofi -modi drun,ssh,window -show drun"
 
 # change focus
 bindsym $mod+h focus left
