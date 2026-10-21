@@ -117,6 +117,7 @@ add-zsh-hook preexec _title_preexec
 # ── ls colors ─────────────────────────────────────────────────────────
 alias ls='ls --color=auto'
 alias n='nvim'
+alias cdk='cd "$HOME/Repos/knowledge-base"'
 
 # ── Git aliases ───────────────────────────────────────────────────────
 alias ga='git add'
